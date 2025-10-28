@@ -68,14 +68,3 @@ main{padding:2rem 0}
 
 /* ========== Footer ========== */
 .site-footer{color:var(--muted);border-top:1px solid var(--border);padding:1rem 0;margin-top:2rem}
-
-/* tag pills used on Builds */
-.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
-.tag{font-size:.85rem;padding:.18rem .45rem;border:1px solid var(--border);
-     border-radius:999px;color:var(--muted);background:var(--bg)}
-.tag:hover{border-color:var(--accent);color:#fff}
-
-.steps{margin:1rem 0 1.25rem;padding-left:1.1rem}
-.steps li{margin:.4rem 0}
-.bullets{margin:.2rem 0 0 1rem;padding:0}
-.bullets li{margin:.35rem 0}
