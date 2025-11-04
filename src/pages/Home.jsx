@@ -1,8 +1,33 @@
+// src/pages/Home.jsx
+import Carousel from "../components/Carousel";
+
 export default function Home() {
   return (
     <>
-      <section className="hero"><div className="text-overlay"><h1>Welcome to KeiTruck Hub</h1><p>Compact • Efficient • Versatile</p><a href="/models" className="btn">Browse Models</a></div></section>
+      {/* ✅ Hero Section (fixed your broken tags) */}
+      <section className="hero">
+        <div className="text-overlay">
+          <h1>KeiTruck Hub</h1>
+          <p className="lead">Explore models, specs, builds, and importing guides for Kei trucks.</p>
+          <a href="/models" className="btn">Browse Models</a>
+        </div>
+      </section>
+
       <main className="wrapper">
+        {/* ✅ Slideshow Section (for Part 9 requirement) */}
+        <section className="section">
+          <h2>Featured</h2>
+          <Carousel
+            images={[
+              "/images/kei-truck-japan.jpg",
+              "/images/subaru-sambar.jpg",
+              "/images/kei-truck-bannner.png"
+            ]}
+            intervalMs={3500}
+          />
+        </section>
+
+        {/* ✅ Your original Featured Models Section */}
         <section className="section">
           <h2>Featured Models</h2>
           <div className="grid-3">
