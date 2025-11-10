@@ -8,6 +8,8 @@ import Builds from "./pages/Builds";
 import Importing from "./pages/Importing";
 import Contact from "./pages/Contact";
 import ModelDetail from "./pages/ModelDetail";
+import "./styles.css";
+
 
 export default function App(){
   return (
