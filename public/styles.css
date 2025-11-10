@@ -120,7 +120,7 @@ nav a:hover {
 .hero {
   width: 100%;
   min-height: 350px; 
-  background: url('/images/kei-truck-bannner.png') center/cover no-repeat;
+  background: url('images/kei-truck-bannner.png') center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
