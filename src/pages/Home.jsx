@@ -17,14 +17,15 @@ export default function Home() {
         {/* ✅ Slideshow Section (for Part 9 requirement) */}
         <section className="section">
           <h2>Featured</h2>
-          <Carousel
+         <Carousel
             images={[
-              "/images/kei-truck-japan.jpg",
-              "/images/subaru-sambar.jpg",
-              "/images/kei-truck-bannner.png"
+              process.env.PUBLIC_URL + "/images/kei-truck-japan.jpg",
+              process.env.PUBLIC_URL + "/images/subaru-sambar.jpg",
+              process.env.PUBLIC_URL + "/images/kei-truck-bannner.png"
             ]}
-            intervalMs={3500}
-          />
+  intervalMs={3500}
+/>
+
         </section>
 
         {/* ✅ Your original Featured Models Section */}
