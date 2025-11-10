@@ -7,7 +7,7 @@ export default function Header(){
     <header className="site-header">
       <div className="header-bar">
         <div className="brand">
-          <img src="/images/kei-truck-logo.png" alt="KeiTruck Hub Logo" className="logo-img" />
+          <img src={process.env.PUBLIC_URL +"/images/kei-truck-logo.png"} alt="KeiTruck Hub Logo" className="logo-img" />
           <strong>KeiTruck Hub</strong>
         </div>
         <button className="hamburger" onClick={()=>setOpen(o=>!o)} aria-expanded={open}>☰</button>

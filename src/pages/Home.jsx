@@ -32,17 +32,17 @@ export default function Home() {
           <h2>Featured Models</h2>
           <div className="grid-3">
             <article className="card">
-              <img src="/images/suzuki-carry.webp" alt="Suzuki Carry" />
+              <img src={process.env.PUBLIC_URL +"/images/suzuki-carry.webp"} alt="Suzuki Carry" />
               <h3>Suzuki Carry</h3>
               <p>Reliable workhorse with compact size and great utility.</p>
             </article>
             <article className="card">
-              <img src="/images/honda-acty.JPG" alt="Honda Acty" />
+              <img src={process.env.PUBLIC_URL +"/images/honda-acty.JPG"} alt="Honda Acty" />
               <h3>Honda Acty</h3>
               <p>Efficient, lightweight, and versatile for daily tasks.</p>
             </article>
             <article className="card">
-              <img src="/images/daihatsu-hijet.jpeg" alt="Daihatsu Hijet" />
+              <img src={process.env.PUBLIC_URL +"/images/daihatsu-hijet.jpeg"} alt="Daihatsu Hijet" />
               <h3>Daihatsu Hijet</h3>
               <p>A durable mini truck with plenty of customization options.</p>
             </article>
