@@ -19,6 +19,7 @@ export default function Header(){
             <li><NavLink to="/builds">Custom Builds</NavLink></li>
             <li><NavLink to="/importing">Importing Guide</NavLink></li>
             <li><NavLink to="/contact">Contact</NavLink></li>
+            <li><NavLink to="/add-model">Add Model</NavLink></li>
           </ul>
         </nav>
       </div>

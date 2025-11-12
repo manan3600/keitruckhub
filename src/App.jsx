@@ -8,7 +8,7 @@ import Builds from "./pages/Builds";
 import Importing from "./pages/Importing";
 import Contact from "./pages/Contact";
 import ModelDetail from "./pages/ModelDetail";
-
+import AddModel from "./pages/AddModel";
 
 
 export default function App(){
@@ -23,6 +23,7 @@ export default function App(){
         <Route path="/importing" element={<Importing />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/models/:id" element={<ModelDetail />} />
+        <Route path="/add-model" element={<AddModel />} />
       </Routes>
       <Footer />
     </>
