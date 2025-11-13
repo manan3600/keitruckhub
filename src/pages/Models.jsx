@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ModelCard from "../components/ModelCard";
 
+const API_BASE = "https://server-keitruckhub.onrender.com";
+
 export default function Models() {
   const [models, setModels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,22 +10,37 @@ export default function Models() {
 
   useEffect(() => {
     async function fetchModels() {
+      setLoading(true);
+      setError("");
+
       try {
-        const res = await fetch("http://localhost:4000/api/models");
+        const res = await fetch(`${API_BASE}/api/models`);
         if (!res.ok) throw new Error("Failed to fetch data");
         const data = await res.json();
         setModels(data);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "Unable to load models right now.");
       } finally {
         setLoading(false);
       }
     }
+
     fetchModels();
   }, []);
 
-  if (loading) return <main className="wrapper"><h2>Loading models...</h2></main>;
-  if (error) return <main className="wrapper"><h2>Error: {error}</h2></main>;
+  if (loading)
+    return (
+      <main className="wrapper">
+        <h2>Loading models...</h2>
+      </main>
+    );
+
+  if (error)
+    return (
+      <main className="wrapper">
+        <h2>Error: {error}</h2>
+      </main>
+    );
 
   return (
     <main className="wrapper">

@@ -281,6 +281,46 @@ footer.site-footer {
   color: var(--muted);
 }
 
+.add-form {
+  max-width: 600px;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.add-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.add-form label {
+  font-weight: 600;
+}
+
+.add-form input,
+.add-form textarea {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+  font: inherit;
+}
+
+.add-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.status {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+
 /* Mobile Nav */
 @media (max-width: 768px) {
   .hamburger {
