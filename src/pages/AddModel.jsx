@@ -1,97 +1,71 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function AddModel() {
-  const [form, setForm] = useState({ id: "", name: "", year: "", description: "" });
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [year, setYear] = useState("");
+  const [description, setDescription] = useState("");
+  const [message, setMessage] = useState("");
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
-  }
-
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("");
-    setLoading(true);
+    setMessage("");
+
+    const newModel = { id, name, year, description };
 
     try {
       const res = await fetch("https://server-keitruckhub.onrender.com/api/models", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify(newModel)
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to add model");
+        setMessage("❌ Error: " + data.error);
+        return;
       }
 
-      setStatus("Model added successfully!");
-      // Optionally redirect back to models page
-      setTimeout(() => navigate("/models"), 800);
+      setMessage("✅ Successfully added model!");
+
+      // Clear fields
+      setId("");
+      setName("");
+      setYear("");
+      setDescription("");
+
     } catch (err) {
-      setStatus(err.message);
-    } finally {
-      setLoading(false);
+      setMessage("❌ Could not reach server");
     }
-  }
+  };
 
   return (
     <main className="wrapper">
       <section className="section">
-        <h1>Add a New Kei Truck Model</h1>
-        <p className="lead">This form sends a POST request to the Express server.</p>
-
-        <form onSubmit={handleSubmit} className="contact-form">
-          <label>
-            ID (no spaces, e.g. "carry-4x4")
-            <input
-              name="id"
-              value={form.id}
-              onChange={handleChange}
-              required
-            />
+        <h1>Add a New Kei Truck</h1>
+        
+        <form className="add-form" onSubmit={handleSubmit}>
+          <label>ID (unique):
+            <input value={id} onChange={(e) => setId(e.target.value)} required />
           </label>
 
-          <label>
-            Name
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
+          <label>Name:
+            <input value={name} onChange={(e) => setName(e.target.value)} required />
           </label>
 
-          <label>
-            Year
-            <input
-              type="number"
-              name="year"
-              value={form.year}
-              onChange={handleChange}
-            />
+          <label>Year:
+            <input type="number" value={year} onChange={(e) => setYear(e.target.value)} />
           </label>
 
-          <label>
-            Description
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-            />
+          <label>Description:
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
           </label>
 
-          <button className="btn" type="submit" disabled={loading}>
-            {loading ? "Saving..." : "Add Model"}
-          </button>
-
-          {status && <p className="meta" style={{ marginTop: "0.5rem" }}>{status}</p>}
+          <button type="submit">Add Model</button>
         </form>
+
+        {message && <p className="status">{message}</p>}
       </section>
     </main>
   );
