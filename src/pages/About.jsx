@@ -1,10 +1,10 @@
 export default function About() {
   return (
     <>
-      {/* Hero (with custom background from this page) */}
+      
       <section
         className="hero"
-        style={{ background: "url('/images/kei-truck-japan.jpg') center/cover no-repeat" }}
+        style={{ background: "url(process.env.PUBLIC_URL + '/images/kei-truck-japan.jpg') center/cover no-repeat" }}
       >
         <div className="text-overlay">
           <h1>About Kei Trucks</h1>
