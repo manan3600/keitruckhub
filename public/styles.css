@@ -320,6 +320,32 @@ footer.site-footer {
   font-weight: 600;
 }
 
+.model-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-small {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 0.4rem;
+}
+
+.btn-small.danger {
+  background-color: #c0392b;
+  color: #fff;
+}
+
+.btn.secondary {
+  background-color: #eee;
+}
+
 
 /* Mobile Nav */
 @media (max-width: 768px) {

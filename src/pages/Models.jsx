@@ -15,6 +15,7 @@ export default function Models() {
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [message, setMessage] = useState("");
+  const [editingModel, setEditingModel] = useState(null);
 
   useEffect(() => {
     async function fetchModels() {
@@ -42,7 +43,7 @@ export default function Models() {
     const trimmedName = name.trim();
     const numericYear = Number(year);
 
-    if (trimmedId.length < 2) {
+    if (!editingModel && trimmedId.length < 2) {
       setMessage("ID must be at least 2 characters.");
       return;
     }
@@ -52,17 +53,17 @@ export default function Models() {
       return;
     }
 
-    if (
-      !Number.isInteger(numericYear) ||
-      numericYear < 1900 ||
-      numericYear > 2100
-    ) {
+    if (!Number.isInteger(numericYear) || numericYear < 1900 || numericYear > 2100) {
       setMessage("Year must be a whole number between 1900 and 2100.");
       return;
     }
 
+    const isEditing = !!editingModel;
+
     const formData = new FormData();
-    formData.append("id", trimmedId);
+    if (!isEditing) {
+      formData.append("id", trimmedId);
+    }
     formData.append("name", trimmedName);
     formData.append("year", numericYear.toString());
     formData.append("description", description);
@@ -70,28 +71,86 @@ export default function Models() {
       formData.append("image", imageFile);
     }
 
+    const url = isEditing
+      ? `${API_BASE}/api/models/${editingModel.id}`
+      : `${API_BASE}/api/models`;
+    const method = isEditing ? "PUT" : "POST";
+
     try {
-      const res = await fetch(`${API_BASE}/api/models`, {
-        method: "POST",
-        body: formData
+      const res = await fetch(url, {
+        method,
+        body: formData,
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setMessage("❌ Error: " + (data.error || "Could not add model."));
+        setMessage("❌ Error: " + (data.error || "Could not save model."));
         return;
       }
 
-      const created = data.model;
-      setModels((prev) => [...prev, created]);
+      const saved = data.model;
 
-      setMessage("✅ Successfully added model!");
+      if (isEditing) {
+        setModels((prev) =>
+          prev.map((m) => (m.id === editingModel.id ? saved : m))
+        );
+        setMessage("✅ Successfully updated model!");
+      } else {
+        setModels((prev) => [...prev, saved]);
+        setMessage("✅ Successfully added model!");
+      }
+
+      setEditingModel(null);
       setId("");
       setName("");
       setYear("");
       setDescription("");
       setImageFile(null);
+      setShowForm(false);
+    } catch (err) {
+      setMessage("❌ Could not reach server");
+    }
+  };
+
+  const startEdit = (model) => {
+    setEditingModel(model);
+    setId(model.id);
+    setName(model.name);
+    setYear(model.year);
+    setDescription(model.description || "");
+    setImageFile(null);
+    setShowForm(true);
+    setMessage("");
+  };
+
+  const cancelEdit = () => {
+    setEditingModel(null);
+    setId("");
+    setName("");
+    setYear("");
+    setDescription("");
+    setImageFile(null);
+    setShowForm(false);
+    setMessage("");
+  };
+
+  const deleteModel = async (id) => {
+    setMessage("");
+    try {
+      const res = await fetch(`${API_BASE}/api/models/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage("❌ Error: " + (data.error || "Could not delete model."));
+        return;
+      }
+
+      setModels((prev) => prev.filter((m) => m.id !== id));
+      setMessage("✅ Successfully deleted model.");
     } catch (err) {
       setMessage("❌ Could not reach server");
     }
@@ -114,14 +173,22 @@ export default function Models() {
   return (
     <main className="wrapper">
       <section className="section">
-        <h1>Kei Truck Models & Specifications</h1>
+        <h1>Kei Truck Models &amp; Specifications</h1>
+        <p className="lead">Loaded live from your Express server.</p>
 
         <button
           className="btn"
           type="button"
-          onClick={() => setShowForm((prev) => !prev)}
+          onClick={() => {
+            if (editingModel) {
+              cancelEdit();
+            } else {
+              setShowForm((prev) => !prev);
+              setMessage("");
+            }
+          }}
         >
-          {showForm ? "Close Form" : "Add New Model"}
+          {showForm ? (editingModel ? "Close Edit" : "Close Form") : "Add New Model"}
         </button>
 
         {showForm && (
@@ -132,8 +199,9 @@ export default function Models() {
                 id="model-id"
                 value={id}
                 onChange={(e) => setId(e.target.value)}
-                required
+                required={!editingModel}
                 minLength={2}
+                disabled={!!editingModel}
               />
             </div>
 
@@ -177,16 +245,29 @@ export default function Models() {
                 type="file"
                 accept="image/*"
                 onChange={(e) =>
-                  setImageFile(e.target.files && e.target.files[0]
-                    ? e.target.files[0]
-                    : null)
+                  setImageFile(
+                    e.target.files && e.target.files[0]
+                      ? e.target.files[0]
+                      : null
+                  )
                 }
               />
             </div>
 
             <button type="submit" className="btn">
-              Add Model
+              {editingModel ? "Save Changes" : "Add Model"}
             </button>
+
+            {editingModel && (
+              <button
+                type="button"
+                className="btn secondary"
+                onClick={cancelEdit}
+                style={{ marginLeft: "0.5rem" }}
+              >
+                Cancel
+              </button>
+            )}
           </form>
         )}
 
@@ -204,13 +285,25 @@ export default function Models() {
             const href = `/models/${truck.id}`;
 
             return (
-              <ModelCard
-                key={truck.id}
-                img={imgSrc}
-                name={truck.name}
-                meta={meta}
-                href={href}
-              />
+              <div key={truck.id} className="model-card-wrapper">
+                <ModelCard img={imgSrc} name={truck.name} meta={meta} href={href} />
+                <div className="card-actions">
+                  <button
+                    type="button"
+                    className="btn-small"
+                    onClick={() => startEdit(truck)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-small danger"
+                    onClick={() => deleteModel(truck.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
             );
           })}
         </div>
