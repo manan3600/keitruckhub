@@ -174,7 +174,7 @@ export default function Models() {
     <main className="wrapper">
       <section className="section">
         <h1>Kei Truck Models &amp; Specifications</h1>
-        <p className="lead">Loaded live from your Express server.</p>
+        <p className="lead"></p>
 
         <button
           className="btn"
